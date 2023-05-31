@@ -15,10 +15,10 @@ import lombok.Data;
 public class Delivery {
     @Id
     private int productSerialNumber;
-    private int PID;
-    private String FullName;
-    private String Email;
-    private String Address;
-    private String Phone;
+    private int pid;
+    private String fullName;
+    private String email;
+    private String address;
+    private String phone;
 
 }
