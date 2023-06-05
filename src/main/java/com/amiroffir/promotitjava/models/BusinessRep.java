@@ -1,20 +1,13 @@
 package com.amiroffir.promotitjava.models;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
-public class BusinessRep {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public String userID;
-    public String fullName;
-    public String email;
+@DiscriminatorValue("business_rep")
+public class BusinessRep extends User {
     public String companyName;
 
 }

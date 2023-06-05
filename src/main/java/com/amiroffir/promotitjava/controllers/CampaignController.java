@@ -1,45 +1,70 @@
 package com.amiroffir.promotitjava.controllers;
 
-import com.amiroffir.promotitjava.models.Campaign;
+import com.amiroffir.promotitjava.DTOs.CampaignDTO;
+import com.amiroffir.promotitjava.DTOs.UpdateCampaignDTO;
 import com.amiroffir.promotitjava.services.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class CampaignController {
     @Autowired
     private CampaignService campaignService;
 
     @PostMapping("/api/Campaigns/Add")
-    public Campaign addCampaign(@RequestBody Campaign campaign) {
-        return campaign;
+    public CampaignDTO addCampaign(@RequestBody CampaignDTO campaign) {
+        try {
+            return campaignService.addCampaign(campaign);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-    @DeleteMapping
-    public String deleteCampaign(@PathVariable String id) {
-        return id;
+    @DeleteMapping("/api/Campaigns/Delete/{id}")
+    public Boolean deleteCampaign(@PathVariable String id) {
+        try {
+            return campaignService.deleteCampaign(id);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @PutMapping("/api/Campaigns/Update")
-    public Campaign updateCampaign(@RequestBody Campaign campaign) {
-        return campaign;
+    public CampaignDTO updateCampaign(@RequestBody UpdateCampaignDTO campaign) {
+        try {
+            return campaignService.updateCampaign(campaign);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @GetMapping("/api/Campaigns/Get")
-    public List<Campaign> getCampaigns() {
-        return List.of(new Campaign());
+    public List<CampaignDTO> getCampaigns() {
+        try {
+            return campaignService.getCampaigns();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @GetMapping("/api/Campaigns/GetCampaignDetails/{id}")
-    public Campaign getCampaign(@PathVariable String id) {
-        return new Campaign();
+    public CampaignDTO getCampaign(@PathVariable int id) {
+        try {
+            return campaignService.getCampaign(id);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @GetMapping("/api/Campaigns/GetMyCampaigns/{email}")
-    public List<Campaign> getMyCampaigns(@PathVariable String email) {
-        return List.of(new Campaign());
+    public List<CampaignDTO> getMyCampaigns(@PathVariable String email) {
+        try {
+            return campaignService.getMyCampaigns(email);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

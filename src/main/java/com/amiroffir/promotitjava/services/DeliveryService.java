@@ -14,8 +14,7 @@ public class DeliveryService {
 
     @Autowired // This annotation tells Spring to inject an instance of DeliveryRepo here
     private DeliveryRepo deliveryRepo;
-
-
+    
     public List<Delivery> getDeliveries() {
         System.out.println(deliveryRepo.findAll().toString());
         return deliveryRepo.findAll();

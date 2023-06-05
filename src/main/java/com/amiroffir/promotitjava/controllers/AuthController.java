@@ -15,7 +15,10 @@ public class AuthController {
 
     @GetMapping("/api/roles/{id}")
     public String getRoles(@PathVariable String id) {
-        String roles = authService.getRolesFromAuth0(id);
-        return roles;
+        try {
+            return authService.getRolesFromAuth0(id);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

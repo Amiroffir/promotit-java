@@ -1,13 +1,11 @@
 package com.amiroffir.promotitjava.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "campaign")
 public class Campaign {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,6 +15,9 @@ public class Campaign {
     public String campaignHash;
     public String campaignUrl;
     public double donationsAmount;
-    public String nonProfitRepID;
+    @ManyToOne
+    @JoinColumn(name = "non_profit_rep_id")
+    public User nonProfitRep;
+    @Column(length = 100000)
     public String image;
 }

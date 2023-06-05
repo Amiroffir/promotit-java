@@ -1,24 +1,29 @@
 package com.amiroffir.promotitjava.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "product")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public int productSerialNumber;
-    public String productID;
+    public int id;
+    public String productId;
     public String productName;
     public double price;
-    public String donatedBy;
-    public String donatedTo;
+    @ManyToOne
+    @JoinColumn(name = "donated_by")
+    public User donatedBy;
+    @ManyToOne
+    @JoinColumn(name = "donated_to")
+    public Campaign donatedTo;
     public boolean isBought;
-    public String buyerID;
-    public String isDelivered;
+    @ManyToOne
+    @JoinColumn(name = "buyer_id")
+    public SocialActivist buyerID;
+    public boolean isDelivered;
+    @Column(length = 100000)
     public String image;
 }

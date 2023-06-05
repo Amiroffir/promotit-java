@@ -26,7 +26,10 @@ public class AuthService {
         headers.set("Authorization", bearerAuth0);
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        return restTemplate.exchange(urlGetRoles, HttpMethod.GET, entity, String.class).getBody();
-
+        try {
+            return restTemplate.exchange(urlGetRoles, HttpMethod.GET, entity, String.class).getBody();
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }
