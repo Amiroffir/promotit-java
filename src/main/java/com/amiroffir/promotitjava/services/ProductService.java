@@ -1,10 +1,9 @@
 package com.amiroffir.promotitjava.services;
 
 import com.amiroffir.promotitjava.DTOs.ProductDTO;
-import com.amiroffir.promotitjava.models.Campaign;
-import com.amiroffir.promotitjava.models.Product;
-import com.amiroffir.promotitjava.models.SocialActivist;
+import com.amiroffir.promotitjava.models.*;
 import com.amiroffir.promotitjava.repos.CampaignRepo;
+import com.amiroffir.promotitjava.repos.DeliveryRepo;
 import com.amiroffir.promotitjava.repos.ProductRepo;
 import com.amiroffir.promotitjava.repos.UserRepo;
 import org.modelmapper.ModelMapper;
@@ -13,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ProductService {
+    @Autowired
+    private DeliveryRepo deliveryRepo;
     @Autowired
     private ProductRepo productRepo;
     @Autowired
@@ -41,7 +42,7 @@ public class ProductService {
         }
     }
 
-    public Product[] getProducts(Integer campaignId) {
+    public Product[] getProducts(int campaignId) {
         try {
             Campaign campaign = campaignRepo.findById(campaignId).orElseThrow();
             Product[] products = productRepo.findAllByDonatedToAndIsBought(campaign, false);
@@ -57,8 +58,21 @@ public class ProductService {
             SocialActivist socialActivist = (SocialActivist) userRepo.findByEmail(email).orElseThrow();
             product.setBought(true);
             product.setBuyerID(socialActivist);
-            productRepo.save(product);
-            return product;
+            // add delivery to the delivery table by the product and the buyer
+            addDelivery(product, socialActivist);
+            return productRepo.save(product);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    private void addDelivery(Product product, SocialActivist socialActivist) {
+        try {
+            Delivery delivery = new Delivery();
+            delivery.setProduct(product);
+            delivery.setBuyer(socialActivist);
+            delivery.setBusinessRep((BusinessRep) product.getDonatedBy());
+            deliveryRepo.save(delivery);
         } catch (Exception e) {
             throw e;
         }

@@ -3,6 +3,7 @@ package com.amiroffir.promotitjava.configurations;
 
 import com.amiroffir.promotitjava.DTOs.CampaignDTO;
 import com.amiroffir.promotitjava.DTOs.ProductDTO;
+import com.amiroffir.promotitjava.configurations.converters.DeliveryToDeliveryDTO;
 import com.amiroffir.promotitjava.configurations.converters.EmailToUserConverter;
 import com.amiroffir.promotitjava.configurations.converters.StringToCampaign;
 import com.amiroffir.promotitjava.configurations.converters.UserToOrgName;
@@ -22,6 +23,8 @@ public class ModelMapperConfig {
     private UserToOrgName userToOrgName;
     @Autowired
     private StringToCampaign stringToCampaign;
+    @Autowired
+    private DeliveryToDeliveryDTO deliveryToDeliveryDTO;
 
 
     @Bean
@@ -38,8 +41,7 @@ public class ModelMapperConfig {
                     mapping.using(stringToCampaign).map(ProductDTO::getDonatedTo, Product::setDonatedTo);
                     mapping.using(emailToUserConverter).map(ProductDTO::getDonatedBy, Product::setDonatedBy);
                 });
-
-
+        modelMapper.addConverter(deliveryToDeliveryDTO);
         return modelMapper;
     }
 }

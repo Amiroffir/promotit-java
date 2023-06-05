@@ -1,6 +1,7 @@
 package com.amiroffir.promotitjava.controllers;
 
 
+import com.amiroffir.promotitjava.DTOs.DeliveryDTO;
 import com.amiroffir.promotitjava.models.Delivery;
 import com.amiroffir.promotitjava.services.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class BusinessRepController {
     private BusinessService businessService;
 
     @GetMapping("/api/BusinessReps/GetDeliveries/{email}")
-    public List<Delivery> getDeliveries(@PathVariable String email) {
+    public List<DeliveryDTO> getDeliveries(@PathVariable String email) {
         try {
             return businessService.getDeliveries(email);
         } catch (Exception e) {
@@ -24,7 +25,11 @@ public class BusinessRepController {
     }
 
     @PutMapping("/api/BusinessReps/UpdateDelivered/{serialNumber}")
-    public String updateDelivery(@PathVariable String serialNumber) {
-        return serialNumber;
+    public Boolean updateDelivery(@PathVariable int serialNumber) {
+        try {
+            return businessService.updateDelivery(serialNumber);
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
