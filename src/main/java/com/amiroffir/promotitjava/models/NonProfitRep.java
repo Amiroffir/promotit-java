@@ -8,6 +8,6 @@ import lombok.Data;
 @DiscriminatorValue("non_profit_rep")
 public class NonProfitRep extends User {
 
-    public String organizationUrl;
-    public String organizationName;
+    private String organizationUrl;
+    private String organizationName;
 }

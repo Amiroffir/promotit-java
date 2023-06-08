@@ -10,9 +10,9 @@ import java.util.Date;
 @Entity
 @DiscriminatorValue("social_activist")
 public class SocialActivist extends User {
-    public String address;
-    public String phone;
-    public double earningStatus;
-    public String twitterHandle;
-    public Date lastEarningsUpdate;
+    private String address;
+    private String phone;
+    private double earningStatus;
+    private String twitterHandle;
+    private Date lastEarningsUpdate;
 }

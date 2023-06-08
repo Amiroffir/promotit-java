@@ -9,6 +9,7 @@ import com.amiroffir.promotitjava.repos.BusinessRepo;
 import com.amiroffir.promotitjava.repos.DeliveryRepo;
 import com.amiroffir.promotitjava.repos.ProductRepo;
 import com.amiroffir.promotitjava.repos.UserRepo;
+import com.amiroffir.promotitjava.services.LogServices.LogService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,8 @@ public class BusinessService {
     private ProductRepo productRepo;
     @Autowired
     private DeliveryRepo deliveryRepo;
+    @Autowired
+    private LogService logService;
 
     public List<DeliveryDTO> getDeliveries(String email) {
         try {
@@ -38,8 +41,10 @@ public class BusinessService {
                 DeliveryDTO deliveryDTO = modelMapper.map(delivery, DeliveryDTO.class);
                 deliveryDTOs.add(deliveryDTO);
             }
+            logService.logInfo(deliveryDTOs.size() + " deliveries were found for business rep with email " + email);
             return deliveryDTOs;
         } catch (Exception e) {
+            logService.logError("Failed to get deliveries" + e.getMessage());
             throw e;
         }
     }
@@ -50,9 +55,12 @@ public class BusinessService {
             Product product = productRepo.findById(serialNumber).orElseThrow();
             product.setDelivered(true);
             deliveryRepo.deleteByProduct(product);
+            logService.logInfo("Delivery with serial number " + serialNumber + " was deleted successfully");
             productRepo.save(product);
+            logService.logInfo("Product with serial number " + serialNumber + " was updated successfully");
             return true;
         } catch (Exception e) {
+            logService.logError("Failed to update delivery" + e.getMessage());
             throw e;
         }
     }

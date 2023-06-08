@@ -8,6 +8,6 @@ import lombok.Data;
 @Entity
 @DiscriminatorValue("business_rep")
 public class BusinessRep extends User {
-    public String companyName;
+    private String companyName;
 
 }

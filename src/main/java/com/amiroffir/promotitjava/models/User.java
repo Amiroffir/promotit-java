@@ -14,10 +14,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("userID")
-    public int user_id;
+    private int user_id;
     @JsonProperty("userType")
     @Column(insertable = false, updatable = false)
-    public String user_type;
-    public String fullName;
-    public String email;
+    private String user_type;
+    private String fullName;
+    private String email;
 }

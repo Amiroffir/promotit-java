@@ -9,21 +9,21 @@ import lombok.Data;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public int id;
-    public String productId;
-    public String productName;
-    public double price;
+    private int id;
+    private String productId;
+    private String productName;
+    private double price;
     @ManyToOne
     @JoinColumn(name = "donated_by")
-    public User donatedBy;
+    private User donatedBy;
     @ManyToOne
     @JoinColumn(name = "donated_to")
-    public Campaign donatedTo;
-    public boolean isBought;
+    private Campaign donatedTo;
+    private boolean isBought;
     @ManyToOne
     @JoinColumn(name = "buyer_id")
-    public SocialActivist buyerID;
-    public boolean isDelivered;
+    private SocialActivist buyerID;
+    private boolean isDelivered;
     @Column(length = 100000)
-    public String image;
+    private String image;
 }

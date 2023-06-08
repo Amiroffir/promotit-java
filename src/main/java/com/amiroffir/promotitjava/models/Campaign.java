@@ -9,15 +9,15 @@ import lombok.Data;
 public class Campaign {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public int id;
-    public String campaignName;
-    public String campaignDesc;
-    public String campaignHash;
-    public String campaignUrl;
-    public double donationsAmount;
+    private int id;
+    private String campaignName;
+    private String campaignDesc;
+    private String campaignHash;
+    private String campaignUrl;
+    private double donationsAmount;
     @ManyToOne
     @JoinColumn(name = "non_profit_rep_id")
-    public User nonProfitRep;
+    private User nonProfitRep;
     @Column(length = 100000)
-    public String image;
+    private String image;
 }
