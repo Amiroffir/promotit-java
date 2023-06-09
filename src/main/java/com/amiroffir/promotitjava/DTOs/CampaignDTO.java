@@ -5,19 +5,19 @@ import lombok.Data;
 
 @Data
 public class CampaignDTO {
-    public int id;
+    private int id;
     @JsonProperty("CampaignName")
-    public String campaignName;
+    private String campaignName;
     @JsonProperty("CampaignDesc")
-    public String campaignDesc;
+    private String campaignDesc;
     @JsonProperty("CampaignHash")
-    public String campaignHash;
+    private String campaignHash;
     @JsonProperty("CampaignUrl")
-    public String campaignUrl;
+    private String campaignUrl;
     @JsonProperty("DonationsAmount")
-    public double donationsAmount;
+    private double donationsAmount;
     @JsonProperty("NonProfitRepID")
-    public String nonProfitRep;
+    private String nonProfitRep;
     @JsonProperty("Image")
-    public String image;
+    private String image;
 }
