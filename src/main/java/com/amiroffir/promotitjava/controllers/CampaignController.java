@@ -4,7 +4,10 @@ import com.amiroffir.promotitjava.DTOs.CampaignDTO;
 import com.amiroffir.promotitjava.DTOs.UpdateCampaignDTO;
 import com.amiroffir.promotitjava.services.CampaignService;
 import com.amiroffir.promotitjava.services.LogServices.LogService;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,69 +20,88 @@ public class CampaignController {
     @Autowired
     private LogService logService;
 
+
     @PostMapping("/api/Campaigns/Add")
-    public CampaignDTO addCampaign(@RequestBody CampaignDTO campaign) {
+    public ResponseEntity<CampaignDTO> addCampaign(@RequestBody CampaignDTO campaign) {
         try {
             logService.logInfo("Adding campaign in CampaignController.addCampaign()");
-            return campaignService.addCampaign(campaign);
+            CampaignDTO addedCampaign = campaignService.addCampaign(campaign);
+            return ResponseEntity.status(HttpStatus.CREATED).body(addedCampaign);
         } catch (Exception e) {
             logService.logError("Failed to add campaign" + e.getMessage());
-            return null;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @DeleteMapping("/api/Campaigns/Delete/{id}")
-    public Boolean deleteCampaign(@PathVariable String id) {
+    public ResponseEntity<Boolean> deleteCampaign(@PathVariable String id) {
         try {
             logService.logInfo("Deleting campaign " + id + " in CampaignController.deleteCampaign()");
-            return campaignService.deleteCampaign(id);
+            boolean isDeleted = campaignService.deleteCampaign(id);
+            if (isDeleted) {
+                return ResponseEntity.ok(true);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
+            }
         } catch (Exception e) {
             logService.logError("Failed to delete campaign" + e.getMessage());
-            return false;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @PutMapping("/api/Campaigns/Update")
-    public CampaignDTO updateCampaign(@RequestBody UpdateCampaignDTO campaign) {
+    public ResponseEntity<CampaignDTO> updateCampaign(@RequestBody UpdateCampaignDTO campaign) {
         try {
             logService.logInfo("Updating campaign " + campaign.getId() + " in CampaignController.updateCampaign()");
-            return campaignService.updateCampaign(campaign);
+            CampaignDTO updatedCampaign = campaignService.updateCampaign(campaign);
+            if (updatedCampaign == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            } else {
+                return ResponseEntity.ok(updatedCampaign);
+            }
         } catch (Exception e) {
             logService.logError("Failed to update campaign" + e.getMessage());
-            return null;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @GetMapping("/api/Campaigns/Get")
-    public List<CampaignDTO> getCampaigns() {
+    public ResponseEntity<List<CampaignDTO>> getCampaigns() {
         try {
             logService.logInfo("Getting all campaigns in CampaignController.getCampaigns()");
-            return campaignService.getCampaigns();
+            List<CampaignDTO> campaigns = campaignService.getCampaigns();
+            return ResponseEntity.ok(campaigns);
         } catch (Exception e) {
             logService.logError("Failed to get campaigns" + e.getMessage());
-            return null;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @GetMapping("/api/Campaigns/GetCampaignDetails/{id}")
-    public CampaignDTO getCampaign(@PathVariable int id) {
+    public ResponseEntity<CampaignDTO> getCampaign(@PathVariable int id) {
         try {
             logService.logInfo("Getting campaign " + id + " in CampaignController.getCampaign()");
-            return campaignService.getCampaign(id);
+            CampaignDTO campaign = campaignService.getCampaign(id);
+            if (campaign == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            } else {
+                return ResponseEntity.ok(campaign);
+            }
         } catch (Exception e) {
             logService.logError("Failed to get campaign" + e.getMessage());
-            return null;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @GetMapping("/api/Campaigns/GetMyCampaigns/{email}")
-    public List<CampaignDTO> getMyCampaigns(@PathVariable String email) {
+    public ResponseEntity<List<CampaignDTO>> getMyCampaigns(@PathVariable String email) {
         try {
             logService.logInfo("Getting campaigns for " + email + " in CampaignController.getMyCampaigns()");
-            return campaignService.getMyCampaigns(email);
+            List<CampaignDTO> campaigns = campaignService.getMyCampaigns(email);
+            return ResponseEntity.ok(campaigns);
         } catch (Exception e) {
             logService.logError("Failed to get campaigns" + e.getMessage());
-            return null;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

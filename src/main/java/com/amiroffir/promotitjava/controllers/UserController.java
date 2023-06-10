@@ -4,6 +4,7 @@ import com.amiroffir.promotitjava.models.User;
 import com.amiroffir.promotitjava.services.LogServices.LogService;
 import com.amiroffir.promotitjava.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,13 +32,18 @@ public class UserController {
     }
 
     @GetMapping("/api/users/GetUserDetails/{id}")
-    public User getUserDetails(@PathVariable int id) {
+    public ResponseEntity<User> getUserDetails(@PathVariable int id) {
         try {
             logService.logInfo("Getting User Details in UserController.getUserDetails()");
-            return userService.getUserDetails(id);
+            User userResponse = userService.getUserDetails(id);
+            if (userResponse == null) {
+                return ResponseEntity.notFound().build();
+            } else {
+                return ResponseEntity.ok(userResponse);
+            }
         } catch (Exception e) {
             logService.logError("Failed to get User Details " + e.getMessage());
-            return null;
+            return ResponseEntity.internalServerError().build();
         }
     }
 
